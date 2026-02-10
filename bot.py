@@ -7,15 +7,27 @@ from telegram import Bot
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
+if not BOT_TOKEN or not CHAT_ID:
+    raise ValueError("BOT_TOKEN and CHAT_ID environment variables must be set")
+
 bot = Bot(token=BOT_TOKEN)
 
 SYMBOL = "EURUSD"
 TIMEFRAME = "1m"
 
 def get_price():
-    url = "https://api.exchangerate.host/latest?base=EUR&symbols=USD"
-    r = requests.get(url).json()
-    return r["rates"]["USD"]
+    try:
+        url = "https://api.exchangerate.host/latest?base=EUR&symbols=USD"
+        r = requests.get(url, timeout=10)
+        r.raise_for_status()
+        data = r.json()
+        return data["rates"]["USD"]
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching price: {e}")
+        raise
+    except (KeyError, ValueError) as e:
+        print(f"Error parsing price data: {e}")
+        raise
 
 prices = []
 
@@ -57,7 +69,10 @@ EXPIRY: 2 Minutes
 """
             bot.send_message(chat_id=CHAT_ID, text=message)
             time.sleep(120)
-        time.sleep(60)
+        else:
+            time.sleep(60)
     except Exception as e:
-        print(e)
+        print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
         time.sleep(60)
