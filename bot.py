@@ -1,5 +1,6 @@
 import os
 import time
+import traceback
 import requests
 import pandas as pd
 from telegram import Bot
@@ -14,6 +15,8 @@ bot = Bot(token=BOT_TOKEN)
 
 SYMBOL = "EURUSD"
 TIMEFRAME = "1m"
+SIGNAL_COOLDOWN = 120  # seconds to wait after sending a signal
+POLL_INTERVAL = 60     # seconds to wait between price checks
 
 def get_price():
     try:
@@ -68,11 +71,10 @@ EXPIRY: 2 Minutes
 ⚠️ Trade responsibly
 """
             bot.send_message(chat_id=CHAT_ID, text=message)
-            time.sleep(120)
+            time.sleep(SIGNAL_COOLDOWN)
         else:
-            time.sleep(60)
+            time.sleep(POLL_INTERVAL)
     except Exception as e:
         print(f"Error: {e}")
-        import traceback
         traceback.print_exc()
-        time.sleep(60)
+        time.sleep(POLL_INTERVAL)
