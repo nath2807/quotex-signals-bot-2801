@@ -98,7 +98,6 @@ class QuotexSignalsBot:
             logger.info("Bot stopped by user")
         except Exception as e:
             logger.error(f"Unexpected error: {e}", exc_info=True)
-            raise
 
 
 def main():

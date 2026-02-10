@@ -28,9 +28,21 @@ class SignalGenerator:
             
         Returns:
             Dictionary with signal details or None if no signal
+            
+        Note:
+            This is a demonstration implementation that generates random signals.
+            For production use, this should be replaced with actual technical analysis
+            using indicators such as:
+            - RSI (Relative Strength Index)
+            - MACD (Moving Average Convergence Divergence)
+            - Bollinger Bands
+            - Moving Averages (SMA, EMA)
+            - Volume analysis
+            
+            The confidence level should be calculated based on multiple indicators
+            agreeing on the signal direction, with proper backtesting validation.
         """
         # Generate random signal for demonstration
-        # In a real implementation, this would use technical indicators
         confidence = random.randint(50, 100)
         
         if confidence < self.confidence_threshold:

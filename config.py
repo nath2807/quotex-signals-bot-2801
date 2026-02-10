@@ -27,6 +27,6 @@ class Config:
     @classmethod
     def validate(cls):
         """Validate configuration."""
-        if not cls.TELEGRAM_BOT_TOKEN and cls.TELEGRAM_CHAT_ID:
+        if not cls.TELEGRAM_BOT_TOKEN or not cls.TELEGRAM_CHAT_ID:
             print("Warning: Telegram credentials not set. Telegram notifications disabled.")
         return True
